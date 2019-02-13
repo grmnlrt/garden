@@ -1,14 +1,32 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @park.name %>
-</p>
-
-<p>
-  <strong>Banner url:</strong>
-  <%= @park.banner_url %>
-</p>
+<div class="banner" style="background-image: linear-gradient(-225deg, rgba(0,101,168,0.6) 0%, rgba(0,36,61,0.6) 50%), url('<%= @park.banner_url %>');">
+  <div class="banner-content">
+    <h1><%= @park.name %></h1>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <% @park.plants.each do |plant| %>
+      <div class="col-md-4">
+        <div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)), url('<%= plant.image_url %>');">
+          <div class="card-description">
+            <h2><%= plant.name %></h2>
+          </div>
+          <%= link_to "+", plant_path(plant), method: :delete, data: { confirm: "Are you sure?"}, class: "card-remove-link" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <h3>Add a plant</h3>
+      <%= simple_form_for [@park, @plant] do |f| %>
+        <%= f.input :name, placeholder: "Palm tree" %>
+        <%= f.input :image_url, placeholder: "http://blog.lecarnetdesbars.fr/wp-content/uploads/2015/04/perchoirParis.jpg" %>
+        <%= f.submit class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 <%= link_to 'Edit', edit_park_path(@park) %> |
 <%= link_to 'Back', parks_path %>
